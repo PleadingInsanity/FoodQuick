@@ -56,7 +56,7 @@ The *Assign Driver to Order* option will ask the user to enter the ID of the ord
 
 The *Finalise Order* option will ask the user to enter an order ID and then change the status of an order in the orders table in the database to COMPLETE as well as add a completion timestamp to that order. FInally a text file called invoice[order ID].txt will be generated in the main program folder. An example of an invoice is pictured below. WARNING: The user must check that all is in order by using the *View Incomplete Orders* option before taking the *Finalise Order* step. Also note that if no driver was assigned then the *Finalise Order* command will not work as expected. 
 
-![Image of menu](/readme-images/invoice-example.png)
+![Image of invoice](/readme-images/invoice-example.png)
 
 ### VIEW OPTIONS
 
