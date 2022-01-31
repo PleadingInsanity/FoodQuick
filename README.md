@@ -70,4 +70,4 @@ This program requires a suitable Java IDE (program was built using IntelliJ) and
 
 ### AUTHOR AND UPDATE DETAILS
 
-This page was created by Philippa Colly and last updated in January 2022
+This program was created by Philippa Colly and last updated in January 2022
