@@ -74,9 +74,9 @@ public class Order {
 
                 //Enters a single food item order into the items_ordered table in the QuickFoodMS database
                 statement.executeUpdate("INSERT INTO items_ordered (orders_id, item_name, cost, qty, " +
-                        "special_instructions, items_total_cost) " +
+                        "special_instructions) " +
                         "VALUES (" + order.orderId + ", '" + itemName + "', " + cost + ", " + qty + ", '" +
-                        specialInstructions + "', " + cost.multiply(BigDecimal.valueOf(qty)) + ");");
+                        specialInstructions + "');");
 
                 orderAgain = JOptionPane.showInputDialog("Would you like to place another order y/n?");
 
@@ -86,9 +86,9 @@ public class Order {
             /*Updates the relevant entry in the orders table with the total cost (summed in the SQL query) from all
             items ordered under this order ID*/
             rowsAffected3 = statement.executeUpdate("UPDATE orders " +
-                    "SET total_cost = items_ordered.itemsTotalCost " +
-                    "FROM (SELECT SUM(items_total_cost) AS itemsTotalCost FROM items_ordered WHERE orders_id = " +
-                    order.orderId + ") items_ordered " +
+                    "SET total_cost = (" +
+                    "SELECT SUM(items_ordered.cost*items_ordered.qty) " +
+                    "FROM items_ordered WHERE orders_id = " + order.orderId + ") " +
                     "WHERE id = " + order.orderId + ";");
 
             System.out.println("Query complete, " + rowsAffected3 + " rows updated.");
@@ -190,9 +190,8 @@ public class Order {
 
                 //Updates relevant entry in items_ordered table based on newly entered or confirmed details
                 int rowsAffected = statement2.executeUpdate("UPDATE items_ordered SET item_name='" + itemName +
-                        "', cost=" + cost + ", qty=" + qty + ", special_instructions='" + specialInstructions + "', " +
-                        "items_total_cost = " + cost.multiply(BigDecimal.valueOf(qty)) +
-                        " WHERE id=" + itemId + ";");
+                        "', cost=" + cost + ", qty=" + qty + ", special_instructions='" + specialInstructions + "' " +
+                        "WHERE id=" + itemId + ";");
                 System.out.println("Query complete, " + rowsAffected + " rows updated in items_ordered.");
 
                 itemNumber++;
@@ -203,9 +202,9 @@ public class Order {
                 /*Updates the relevant entry in the orders table with the total cost (summed in the SQL query) from all
                 items ordered under this order ID*/
                 int rowsAffected2 = statement.executeUpdate("UPDATE orders " +
-                        "SET total_cost = items_ordered.itemsTotalCost" +
-                        "FROM (SELECT SUM(items_total_cost) AS itemsTotalCost FROM items_ordered WHERE orders_id = " +
-                        id + ") items_ordered " +
+                        "SET total_cost = (" +
+                        "SELECT SUM(items_ordered.cost*items_ordered.qty) " +
+                        "FROM items_ordered WHERE orders_id = " + id + ") " +
                         "WHERE id = " + id + ";");
                 System.out.println("Query complete, " + rowsAffected2 + " rows updated in orders.");
             } else {
@@ -413,8 +412,7 @@ public class Order {
                     "item_name IS NULL OR LTRIM(RTRIM(item_name)) = '' OR " +
                     "cost IS NULL OR LTRIM(RTRIM(cost)) = '' OR " +
                     "qty IS NULL OR LTRIM(RTRIM(qty)) = '' OR " +
-                    "special_instructions IS NULL OR LTRIM(RTRIM(special_instructions)) = '' OR " +
-                    "items_total_cost IS NULL OR LTRIM(RTRIM(items_total_cost)) = '';");
+                    "special_instructions IS NULL OR LTRIM(RTRIM(special_instructions)) = '';");
 
             //If incomplete result found, prints out result
             while (itemOrderResults.next()) {
@@ -425,8 +423,7 @@ public class Order {
                                 + "item_name: " + itemOrderResults.getString("item_name") + ", "
                                 + "cost: " + itemOrderResults.getString("cost") + ", "
                                 + "qty: " + itemOrderResults.getString("qty") + ", "
-                                + "special_instructions: " + itemOrderResults.getString("special_instructions") + ", "
-                                + "items_total_cost: " + itemOrderResults.getString("items_total_cost")
+                                + "special_instructions: " + itemOrderResults.getString("special_instructions")
                 );
             }
 
